@@ -1,0 +1,169 @@
+swagger: "2.0"
+info:
+  title: Data Saver API
+  description: API description of the data ingestion.
+  version: 1.0.0
+host: api.example.com
+schemes:
+  - http
+paths:
+  /pedestrians:
+    post:
+      summary: Records the pedestrian data added on demand.
+      description: Records time series of coordonates resulting from the moving of the entity.
+      consumes:
+        - application/json
+      produces:
+        - text/plain
+      responses:
+        default:
+          description: "The request has been fulfilled and resulted in a new resource being created."
+        201:
+          description: Created
+        500:
+          description: InternalServerError, if the data cannot be parsed
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New pedestrian object with different coordonates and velocities."
+          required: true
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/PedestrianDataNotification"
+  /vehicles:
+    post:
+      summary: Records vehicle data sent on demand.
+      description: Records time series of coordonates resulting from the moving of the entity.
+      produces:
+        - text/plain
+      responses:
+        default:
+          description: "The request has been fulfilled and resulted in a new resource being created."
+        201:
+          description: Created
+        500:
+          description: InternalServerError, if the data cannot be parsed
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New pedestrian object with different coordonates and velocities."
+          required: true
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/CarDataNotification"
+definitions:
+  PedestrianDataNotification:
+    type: object
+    properties:
+      MessageId:
+        type: string
+        format: "uuid"
+      Message:
+        type: object
+        $ref: "#/definitions/NewPedestrian"
+      Timestamp:
+        type: string
+        format: "date-time"
+
+  CarDataNotification:
+    type: object
+    properties:
+      MessageId:
+        type: string
+        format: "uuid"
+      Message:
+        type: object
+        $ref: "#/definitions/NewCar"
+      Timestamp:
+        type: string
+        format: "date-time"
+  NewPedestrian:
+    type: object
+    properties:
+      Time:
+        type: integer
+        format: "double"
+      PedID:
+        type: string
+        format: string
+      Role:
+        type: string
+        format: string
+      Gender:
+        type: string
+        enum:
+          - Male
+          - Female
+          - Other
+      Age:
+        type: string
+      PosX:
+        type: integer
+        format: "double"
+      PosY:
+        type: integer
+        format: "double"
+      PosZ:
+        type: integer
+        format: "double"
+      VelX:
+        type: integer
+        format: "double"
+      VelY:
+        type: integer
+        format: "double"
+      VelZ:
+        type: integer
+        format: "double"
+      RotPitch:
+        type: integer
+        format: "double"
+      RotRoll:
+        type: integer
+        format: "double"
+      RotYaw:
+        type: integer
+        format: "double"
+      Respawned:
+        type: boolean
+      Teleported:
+        type: boolean
+
+  NewCar:
+    type: object
+    properties:
+      Time:
+        type: integer
+        format: "double"
+      CarID:
+        type: string
+        format: string
+      PosX:
+        type: integer
+        format: "double"
+      PosY:
+        type: integer
+        format: "double"
+      PosZ:
+        type: integer
+        format: "double"
+      VelX:
+        type: integer
+        format: "double"
+      VelY:
+        type: integer
+        format: "double"
+      VelZ:
+        type: integer
+        format: "double"
+      RotPitch:
+        type: integer
+        format: "double"
+      RotRoll:
+        type: integer
+        format: "double"
+      RotYaw:
+        type: integer
+        format: "double"
